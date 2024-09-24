@@ -43,6 +43,12 @@ The target variable is wine quality, which is classified into two categories:
 
 The KNN model with Manhattan distance and inverse distance weighting proved to be the most effective, achieving an F1 score of 0.87. Standardizing the data significantly improved model performance, especially for KNN, which outperformed Logistic Regression on this dataset.
 
+- Developed a home price prediction model using Kaggle’s Ames Housing Dataset (2,919 records, 79 features), utilizing K-Nearest Neighbors (KNN) to estimate new house prices.
+- Performed statistical analysis and correlation analysis on 5 variables to decide their impact on home prices.
+-	Feature Engineering: Created critical predictive variables to enhance model performance.
+-	Applied the KNN algorithm and predicted the price of a new house based on the average price of the five most similar houses, arriving at an estimated price of $121,080.
+
+
 | Model                    | F1 Score | Precision | Recall | Accuracy |
 |--------------------------|----------|-----------|--------|----------|
 | KNN (Manhattan, IDW)      | 0.87     | 0.86      | 0.89   | 0.83     |
@@ -58,4 +64,4 @@ The KNN model with Manhattan distance and inverse distance weighting proved to b
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-username/wine-quality-prediction.git
+   git clone https://github.com/gksdusql94/ML_Wine.git
