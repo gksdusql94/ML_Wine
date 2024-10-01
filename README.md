@@ -11,7 +11,7 @@ The objective of this project is to build and evaluate machine learning models t
 The dataset used contains white wine quality measurements from the UCI Machine Learning Repository, consisting of over 4,000 entries. Features include acidity, sugar, pH, alcohol, and more. The target variable, quality, was binarized into "good" (quality > 5) and "bad" (quality <= 5).
 
 ## Models
-1. **K-Nearest Neighbors (KNN)**:
+### 1. **K-Nearest Neighbors (KNN)**:
    - Hyperparameters: k values, distance metrics (Euclidean, Manhattan), weights (uniform, distance).
    - The best KNN model used k=11, Manhattan distance, and distance-based weights.
 
@@ -75,7 +75,8 @@ df_sorted
 | k=5, distance=euclidean, weights=uniform   | 5  | euclidean | uniform  | 0.678334   |
 
 
-2. **Logistic Regression (LR)**:
+
+### 2. **Logistic Regression (LR)**:
    - Regularized LR tested with L1 and L2 penalties, and values of `C` (regularization strength).
    - The best LR model used L1 regularization with `C=10`.
 
