@@ -78,8 +78,52 @@ df_sorted
 2. **Logistic Regression (LR)**:
    - Regularized LR tested with L1 and L2 penalties, and values of `C` (regularization strength).
    - The best LR model used L1 regularization with `C=10`.
-   -
 
+```python
+C_values = [ 0.1, 1.0, 10]
+penalty_values = ['l1', 'l2']
+
+## Creating an empty DataFrame for logistic regression performance
+perform_df = pd.DataFrame(columns=['Experiment name', 'penalty', 'solver', 'C', 'Average F1'])
+
+index_counter = 0
+
+## Creating for loop to iterate over all the hyperparameters of logistic regression
+for c in C_values:
+    for p in penalty_values:
+        # Define the model with its parameters
+        solver = 'liblinear' if p == 'l1' else 'lbfgs'
+        model_args = {'penalty': p, 'C': c, 'solver': solver, "max_iter":1000}
+
+        ## Apply sFold cross-validation defined in question 17
+        expected_labels4, predicted_labels4, avg_error = sFold(5, data, labels, LogisticRegression, model_args, f1_score)
+
+        ## Calculate the average f1-score
+        average_f1 = f1_score(expected_labels4, predicted_labels4, average="weighted")
+
+        ## Populating the dataframe with values generated and the hyperparameters used
+        perform_df_values = pd.DataFrame({'Experiment name': f'penalty={p}, solver={solver}, C={c}',
+                                              'penalty': p,
+                                              'solver': solver,
+                                              'C': c,
+                                              'Average F1': average_f1},
+                                             index=[index_counter])
+
+        ## Concatenating DataFrames
+        perform_df = pd.concat([perform_df, perform_df_values])
+```
+
+![image](https://github.com/user-attachments/assets/df5b3474-73ee-488c-a9fc-3c78bbe2c752)
+
+
+## Display the resulting DataFrame
+perform_df
+
+# Sort the DataFrame by 'Average F1' in descending order
+perform_df_sorted = perform_df.sort_values(by='Average F1', ascending=False).reset_index(drop=True)
+
+# Display the sorted DataFrame
+perform_df_sorted
 ## 🧠 Results
 
 The KNN model using Manhattan distance and inverse distance weighting (IDW) provided the best results with an F1 score of 0.87, outperforming Logistic Regression.
