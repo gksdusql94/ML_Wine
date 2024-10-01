@@ -96,29 +96,36 @@ lr.fit(train_data, train_labels)
 test_pred = lr.predict(test_data)
 ```
 
+
+### 6. Model Evaluation
+The models were evaluated using accuracy, F1-score, precision, recall, and ROC-AUC.
+
+![image](https://github.com/user-attachments/assets/f7900944-8a4a-4777-ba68-e493afddf736)
+
+### 7. ROC Curve and Optimal Threshold for KNN
+We generated the ROC curve for the KNN model and determined the optimal threshold for F1 score maximization.
+
+```python
+from sklearn.metrics import roc_curve, auc
+
+# ROC Curve for KNN
+fpr, tpr, thresholds = roc_curve(y_test, knn_probs)
+roc_auc = auc(fpr, tpr)
+optimal_threshold = thresholds[np.argmax([f1_score(y_test, [1 if x >= t else 0 for x in knn_probs]) for t in thresholds])]
+```
+![image](https://github.com/user-attachments/assets/912051db-b485-4740-b9ef-3882045f71f1)
+Optimal Threshold for KNN: 0.3090528018168291
+F1 Score using Optimal Threshold: 0.8592692828146145
+
+
 ## 🧠 Results
 
 The KNN model using Manhattan distance and inverse distance weighting (IDW) provided the best results with an F1 score of 0.87, outperforming Logistic Regression.
-
-```python
-# Best model parameters based on previous results: KNN
-best_k = 11
-best_distance = 'manhattan'
-best_weights = 'distance'
-
-# Re-train the model on full training data
-knn = KNeighborsClassifier(n_neighbors=best_k, weights=best_weights, metric=best_distance)
-knn.fit(train_data, train_labels)
-```
-
 
 | Model                    | F1 Score | Precision | Recall | Accuracy |
 |--------------------------|----------|-----------|--------|----------|
 | KNN (Manhattan, IDW)      | 0.87     | 0.86      | 0.89   | 0.83     |
 | Logistic Regression (L2)  | 0.82     | 0.81      | 0.84   | 0.79     |
-
-
-### 7. Model Evaluation
 
 
 ## Conclusion
