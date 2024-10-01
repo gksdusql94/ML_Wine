@@ -129,6 +129,58 @@ perform_df_sorted
 
 The KNN model using Manhattan distance and inverse distance weighting (IDW) provided the best results with an F1 score of 0.87, outperforming Logistic Regression.
 
+```python
+# Best model parameters based on previous results: KNN
+best_k = 11
+best_distance = 'manhattan'
+best_weights = 'distance'
+
+# Re-train the model on full training data
+knn = KNeighborsClassifier(n_neighbors=best_k, weights=best_weights, metric=best_distance)
+knn.fit(train_data, train_labels)
+
+# Make predictions on test data
+test_pred = knn.predict(test_data)
+
+# Calculate performance metrics
+print("Precision: ", precision_score(test_labels, test_pred))
+print("Recall: ", recall_score(test_labels, test_pred))
+print("F1 Score: ", f1_score(test_labels, test_pred))
+print("Confusion Matrix: ")
+print(confusion_matrix(test_labels, test_pred))
+print("Accuracy: ", accuracy_score(test_labels, test_pred))
+
+# Calculate generalization error
+gen_error = 1 - accuracy_score(test_labels, test_pred)
+print("Generalization Error: ", gen_error)
+```
+
+```python
+# Best model parameters based on previous results:IDW
+best_penalty = 'l1'
+best_C = 10.0
+best_solver = 'liblinear'
+
+# Re-train the model on full training data
+lr = LogisticRegression(penalty=best_penalty, C=best_C, solver=best_solver, max_iter=1000)
+lr.fit(train_data, train_labels)
+
+# Make predictions on test data
+test_pred = lr.predict(test_data)
+
+# Calculate performance metrics
+print("Precision: ", precision_score(test_labels, test_pred))
+print("Recall: ", recall_score(test_labels, test_pred))
+print("F1 Score: ", f1_score(test_labels, test_pred))
+print("Confusion Matrix: ")
+print(confusion_matrix(test_labels, test_pred))
+print("Accuracy: ", accuracy_score(test_labels, test_pred))
+
+# Calculate generalization error
+gen_error = 1 - accuracy_score(test_labels, test_pred)
+print("Generalization Error: ", gen_error)
+```
+
 | Model                    | F1 Score | Precision | Recall | Accuracy |
 |--------------------------|----------|-----------|--------|----------|
 | KNN (Manhattan, IDW)      | 0.87     | 0.86      | 0.89   | 0.83     |
