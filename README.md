@@ -112,11 +112,6 @@ for c in C_values:
 
         ## Concatenating DataFrames
         perform_df = pd.concat([perform_df, perform_df_values])
-```
-
-![image](https://github.com/user-attachments/assets/df5b3474-73ee-488c-a9fc-3c78bbe2c752)
-
-
 ## Display the resulting DataFrame
 perform_df
 
@@ -125,6 +120,11 @@ perform_df_sorted = perform_df.sort_values(by='Average F1', ascending=False).res
 
 # Display the sorted DataFrame
 perform_df_sorted
+```
+
+![image](https://github.com/user-attachments/assets/df5b3474-73ee-488c-a9fc-3c78bbe2c752)
+
+
 ## 🧠 Results
 
 The KNN model using Manhattan distance and inverse distance weighting (IDW) provided the best results with an F1 score of 0.87, outperforming Logistic Regression.
