@@ -35,6 +35,7 @@ The target variable is wine quality, which is classified into two categories:
 3. **Model Evaluation**: 
    - Used cross-validation to evaluate the models.
    - Achieved the best F1 score of 0.87 with the KNN model using Manhattan distance and inverse distance weighting.
+     
 4. **Performance Improvement**:
    - Standardized the dataset to enhance model accuracy.
    - The KNN model outperformed Logistic Regression, with a performance improvement of 10% after standardization.
@@ -62,8 +63,24 @@ The KNN model with Manhattan distance and inverse distance weighting proved to b
 
 ## 💻 How to Run
 Clone the repository:
-   ```bash
-   git clone https://github.com/gksdusql94/ML_Wine.git```
+```bash
+git clone https://github.com/gksdusql94/ML_Wine.git
+```
+
+
+## 📈Visuals
+
+### Pair Plot of Features vs. Quality
+
+```python
+import seaborn as sns
+sns.pairplot(df, hue = 'quality') # I want to compare all files with quality
+plt.show()
+```
+![image](https://github.com/user-attachments/assets/c9072b96-6bca-40f4-a3cc-ca9a87769a59)
+
+
+ROC Curve for KNN Model
 
 
 
