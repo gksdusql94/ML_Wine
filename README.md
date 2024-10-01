@@ -1,6 +1,6 @@
 # 🍷 Wine Quality Prediction Using KNN and Logistic Regression
 
-This project focuses on predicting wine quality based on various chemical properties using machine learning models. We implemented two models: K-Nearest Neighbors (KNN) and Logistic Regression, comparing their performance and optimizing hyperparameters to achieve the best results.
+This project explores machine learning techniques to classify wine quality as "good" or "bad" based on physicochemical properties. Two models, K-Nearest Neighbors (KNN) and Logistic Regression (LR), were used, evaluated, and optimized. The aim was to compare performance metrics like accuracy, F1-score, precision, and recall, and find the optimal model.
 
 ## 🎯 Objective
 
@@ -8,52 +8,93 @@ The objective of this project is to build and evaluate machine learning models t
 
 ## 📊 Dataset
 
-The dataset used in this project is a real-world dataset of wine quality, consisting of over 4,000 entries and 11 features, including:
+The dataset used contains white wine quality measurements from the UCI Machine Learning Repository, consisting of over 4,000 entries. Features include acidity, sugar, pH, alcohol, and more. The target variable, quality, was binarized into "good" (quality > 5) and "bad" (quality <= 5).
 
-- Fixed acidity
-- Volatile acidity
-- Citric acid
-- Residual sugar
-- Chlorides
-- Free sulfur dioxide
-- Total sulfur dioxide
-- Density
-- pH
-- Sulphates
-- Alcohol
+## Models
+1. **K-Nearest Neighbors (KNN)**:
+   - Hyperparameters: k values, distance metrics (Euclidean, Manhattan), weights (uniform, distance).
+   - The best KNN model used k=11, Manhattan distance, and distance-based weights.
 
-The target variable is wine quality, which is classified into two categories:
-- **Good quality**: wine quality > 5
-- **Bad quality**: wine quality ≤ 5
+```python
+#values of for parameters of Knn model  is already given in the question, which are as follows
+k_values = [1, 5, 9, 11]
+distances = ["euclidean", "manhattan"]
+weights = ["uniform", "distance"]
+#creating an empty dataframe to populate the resultant values after the model performance
+perf = pd.DataFrame(columns=['Experiment name', 'n_neighbors', 'distance', 'weights', 'Average F1'])
+# Split data into training and testing sets
+train_data, test_data, train_labels, test_labels = train_test_split(data, labels, test_size=0.2, random_state=42)
+#using for loop to go over all three parameters given in the questions
+# for using sfold function defined in previous question
+index_counter = 0
+for k in k_values:
+    for distance in distances:
+        for weight in weights:
+            # define the model with its parameters
+              model_args = {'n_neighbors': k, 'weights': weight, 'metric': distance}
 
-## 🔑  Key Achievements
+               # apply sfold cross validation here e are doing s=4, the same function used in last question
+              expected_labels5, predicted_labels5, avg_error = sFold(5, train_data, train_labels, KNeighborsClassifier, model_args, f1_score)
 
-1. **Data Preprocessing**: Cleaned and standardized the dataset for better model performance. Removed redundant features based on correlation analysis.
-2. **Model Implementation**:
-   - Developed custom KNN and Logistic Regression models.
-   - Experimented with different hyperparameters such as distance metrics (Euclidean/Manhattan) and regularization types (L1/L2).
-3. **Model Evaluation**: 
-   - Used cross-validation to evaluate the models.
-   - Achieved the best F1 score of 0.87 with the KNN model using Manhattan distance and inverse distance weighting.
-     
-4. **Performance Improvement**:
-   - Standardized the dataset to enhance model accuracy.
-   - The KNN model outperformed Logistic Regression, with a performance improvement of 10% after standardization.
+              #calculate the average f1-score
+              average_f1= f1_score(expected_labels5, predicted_labels5, average="weighted")
+
+              performance_df_values = pd.DataFrame({'Experiment name': f'k={k}, distance={distance}, weights={weight}',
+                                                  'n_neighbors': k,
+                                                  'distance': distance,
+                                                  'weights': weight,
+                                                  'Average F1': average_f1},
+                                                 index=[index_counter])
+
+
+              perf = pd.concat([perf, performance_df_values])
+
+
+df_sorted = perf.sort_values(by='Average F1', ascending=False)
+df_sorted.reset_index(drop =True, inplace=True)
+df_sorted
+```
+
+| Experiment name                           | k  | distance  | weights  | Average F1 |
+|-------------------------------------------|----|-----------|----------|------------|
+| k=11, distance=manhattan, weights=distance | 11 | manhattan | distance | 0.762225   |
+| k=9, distance=manhattan, weights=distance  | 9  | manhattan | distance | 0.756261   |
+| k=9, distance=euclidean, weights=distance  | 9  | euclidean | distance | 0.750974   |
+| k=5, distance=manhattan, weights=distance  | 5  | manhattan | distance | 0.750917   |
+| k=11, distance=euclidean, weights=distance | 11 | euclidean | distance | 0.749836   |
+| k=5, distance=euclidean, weights=distance  | 5  | euclidean | distance | 0.740819   |
+| k=1, distance=manhattan, weights=uniform   | 1  | manhattan | uniform  | 0.732666   |
+| k=1, distance=manhattan, weights=distance  | 1  | manhattan | distance | 0.732666   |
+| k=1, distance=euclidean, weights=uniform   | 1  | euclidean | uniform  | 0.729658   |
+| k=1, distance=euclidean, weights=distance  | 1  | euclidean | distance | 0.729658   |
+| k=5, distance=manhattan, weights=uniform   | 5  | manhattan | uniform  | 0.688057   |
+| k=9, distance=manhattan, weights=uniform   | 9  | manhattan | uniform  | 0.686565   |
+| k=11, distance=manhattan, weights=uniform  | 11 | manhattan | uniform  | 0.682463   |
+| k=9, distance=euclidean, weights=uniform   | 9  | euclidean | uniform  | 0.680960   |
+| k=11, distance=euclidean, weights=uniform  | 11 | euclidean | uniform  | 0.678459   |
+| k=5, distance=euclidean, weights=uniform   | 5  | euclidean | uniform  | 0.678334   |
+
+
+2. **Logistic Regression (LR)**:
+   - Regularized LR tested with L1 and L2 penalties, and values of `C` (regularization strength).
+   - The best LR model used L1 regularization with `C=10`.
+   -
 
 ## 🧠 Results
 
-The KNN model with Manhattan distance and inverse distance weighting proved to be the most effective, achieving an F1 score of 0.87. Standardizing the data significantly improved model performance, especially for KNN, which outperformed Logistic Regression on this dataset.
-
-- Developed a home price prediction model using Kaggle’s Ames Housing Dataset (2,919 records, 79 features), utilizing K-Nearest Neighbors (KNN) to estimate new house prices.
-- Performed statistical analysis and correlation analysis on 5 variables to decide their impact on home prices.
--	Feature Engineering: Created critical predictive variables to enhance model performance.
--	Applied the KNN algorithm and predicted the price of a new house based on the average price of the five most similar houses, arriving at an estimated price of $121,080.
-
+The KNN model using Manhattan distance and inverse distance weighting (IDW) provided the best results with an F1 score of 0.87, outperforming Logistic Regression.
 
 | Model                    | F1 Score | Precision | Recall | Accuracy |
 |--------------------------|----------|-----------|--------|----------|
 | KNN (Manhattan, IDW)      | 0.87     | 0.86      | 0.89   | 0.83     |
 | Logistic Regression (L2)  | 0.82     | 0.81      | 0.84   | 0.79     |
+
+## Conclusion
+KNN with k=11 and Manhattan distance outperformed logistic regression for this task. However, logistic regression performed competitively and may be preferred when model interpretability or faster predictions are necessary.
+
+## Future Work
+- Experiment with ensemble models such as Random Forest and Boosting.
+- Further investigate feature engineering and hyperparameter tuning for potential improvements.
 
 ## ⚙️ Skills & Tools
 
