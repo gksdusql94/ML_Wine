@@ -98,6 +98,44 @@ test_pred = lr.predict(test_data)
 ### 6. Model Evaluation
 The models were evaluated using accuracy, F1-score, precision, recall, and ROC-AUC.
 
+```python
+from sklearn.metrics import roc_auc_score
+# Calculate the AUC score
+auc_score = roc_auc_score(test_labels, knn_probs)
+
+from sklearn.metrics import precision_recall_curve
+
+# Calculate precision and recall values
+precision, recall, thresholds = precision_recall_curve(test_labels, knn_probs)
+
+# Plot the precision-recall curve
+plt.figure()
+plt.plot(recall, precision, color='b', lw=2)
+plt.xlabel('Recall')
+plt.ylabel('Precision')
+plt.title('Precision-Recall Curve for KNN')
+plt.xlim([0.0, 1.0])
+plt.ylim([0.0, 1.05])
+plt.grid(True)
+
+# Calculate F1 scores at each threshold
+f1_scores = [2 * (p * r) / (p + r) if (p + r) > 0 else 0 for p, r in zip(precision, recall)]
+
+# Determine the optimal threshold that maximizes the F1 score
+optimal_threshold = thresholds[np.argmax(f1_scores)]
+
+# Mark the optimal threshold on the precision-recall curve
+plt.scatter(recall[np.argmax(f1_scores)], precision[np.argmax(f1_scores)], c='r', marker='x', s=100, label='Optimal Threshold')
+plt.legend(loc="lower left")
+
+# Print the optimal threshold
+print("Optimal Threshold:", optimal_threshold)
+
+plt.show()
+```
+
+![image](https://github.com/user-attachments/assets/2f1b60c6-26d1-447f-bd14-2f3b6318e1da)
+
 
 ### 7. ROC Curve and Optimal Threshold for KNN
 We generated the ROC curve for the KNN model and determined the optimal threshold for F1 score maximization.
