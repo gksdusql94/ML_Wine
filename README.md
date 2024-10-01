@@ -75,8 +75,6 @@ knn = KNeighborsClassifier(n_neighbors=best_k, weights=best_weights, metric=best
 knn.fit(train_data, train_labels)
 ```
 
-
-
 #### 5-2. **Logistic Regression (LR)**:
    - Regularized LR tested with L1 and L2 penalties, and values of `C` (regularization strength).
    - The best LR model used L1 regularization with `C=10`.
@@ -100,7 +98,6 @@ test_pred = lr.predict(test_data)
 ### 6. Model Evaluation
 The models were evaluated using accuracy, F1-score, precision, recall, and ROC-AUC.
 
-![image](https://github.com/user-attachments/assets/f7900944-8a4a-4777-ba68-e493afddf736)
 
 ### 7. ROC Curve and Optimal Threshold for KNN
 We generated the ROC curve for the KNN model and determined the optimal threshold for F1 score maximization.
