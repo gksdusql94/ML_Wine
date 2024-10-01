@@ -6,12 +6,50 @@ This project explores machine learning techniques to classify wine quality as "g
 
 The objective of this project is to build and evaluate machine learning models that can accurately predict wine quality (good or bad) based on chemical features such as acidity, sugar content, pH, and alcohol levels.
 
-## 📊 Dataset
+## 📂 Code Structure
 
-The dataset used contains white wine quality measurements from the UCI Machine Learning Repository, consisting of over 4,000 entries. Features include acidity, sugar, pH, alcohol, and more. The target variable, quality, was binarized into "good" (quality > 5) and "bad" (quality <= 5).
+### 1. Data Loading and Preprocessing
+The dataset used is from the UCI repository. It includes 4,898 rows of white wine data and 12 columns (features). The target variable, `quality`, is binarized into "good" (quality > 5) and "bad" (quality <= 5).
+```python
+import pandas as pd
 
-## Models
-### 1. **K-Nearest Neighbors (KNN)**:
+# Load dataset
+df = pd.read_csv('winequality-white.csv', delimiter=';')
+
+# Binarize target variable
+df['quality'] = df['quality'].apply(lambda x: 1 if x > 5 else 0)
+```
+### 2. Exploratory Data Analysis (EDA)
+To identify redundant features, correlations, and visualize relationships between the features and the target, we created pair plots.
+
+```python
+import seaborn as sns
+sns.pairplot(df, hue = 'quality') # I want to compare all files with quality
+plt.show()
+```
+![image](https://github.com/user-attachments/assets/c9072b96-6bca-40f4-a3cc-ca9a87769a59)
+This plot helped us understand the feature relationships and spot potential redundancies, such as high correlation between residual sugar and density.
+
+### 3. Feature Engineering and Selection
+We dropped features with high correlation (above 0.8) and unnecessary ones. After examining the pair plot and correlation matrix, density was dropped due to its strong correlation with residual sugar.
+
+```python
+# Dropping highly correlated features
+df_final = df.drop(columns=['density'])
+```
+### 4. Train-Test Split
+We split the dataset into training (80%) and testing (20%) sets using the train_test_split function from Scikit-learn.
+```python
+from sklearn.model_selection import train_test_split
+
+# Split data
+X = df_final.drop(columns=['quality'])
+y = df_final['quality']
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+```
+
+### 5 Models
+#### 5-1. **K-Nearest Neighbors (KNN)**:
    - Hyperparameters: k values, distance metrics (Euclidean, Manhattan), weights (uniform, distance).
    - The best KNN model used k=11, Manhattan distance, and distance-based weights.
 
@@ -76,7 +114,7 @@ df_sorted
 
 
 
-### 2. **Logistic Regression (LR)**:
+#### 5-2. **Logistic Regression (LR)**:
    - Regularized LR tested with L1 and L2 penalties, and values of `C` (regularization strength).
    - The best LR model used L1 regularization with `C=10`.
 
@@ -204,18 +242,6 @@ Clone the repository:
 ```bash
 git clone https://github.com/gksdusql94/ML_Wine.git
 ```
-
-
-## 📈Visuals
-
-### Pair Plot of Features vs. Quality
-
-```python
-import seaborn as sns
-sns.pairplot(df, hue = 'quality') # I want to compare all files with quality
-plt.show()
-```
-![image](https://github.com/user-attachments/assets/c9072b96-6bca-40f4-a3cc-ca9a87769a59)
 
 
 ### ROC Curve for KNN Model
