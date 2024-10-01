@@ -53,46 +53,6 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_
    - Hyperparameters: k values, distance metrics (Euclidean, Manhattan), weights (uniform, distance).
    - The best KNN model used k=11, Manhattan distance, and distance-based weights.
 
-```python
-#values of for parameters of Knn model  is already given in the question, which are as follows
-k_values = [1, 5, 9, 11]
-distances = ["euclidean", "manhattan"]
-weights = ["uniform", "distance"]
-#creating an empty dataframe to populate the resultant values after the model performance
-perf = pd.DataFrame(columns=['Experiment name', 'n_neighbors', 'distance', 'weights', 'Average F1'])
-# Split data into training and testing sets
-train_data, test_data, train_labels, test_labels = train_test_split(data, labels, test_size=0.2, random_state=42)
-#using for loop to go over all three parameters given in the questions
-# for using sfold function defined in previous question
-index_counter = 0
-for k in k_values:
-    for distance in distances:
-        for weight in weights:
-            # define the model with its parameters
-              model_args = {'n_neighbors': k, 'weights': weight, 'metric': distance}
-
-               # apply sfold cross validation here e are doing s=4, the same function used in last question
-              expected_labels5, predicted_labels5, avg_error = sFold(5, train_data, train_labels, KNeighborsClassifier, model_args, f1_score)
-
-              #calculate the average f1-score
-              average_f1= f1_score(expected_labels5, predicted_labels5, average="weighted")
-
-              performance_df_values = pd.DataFrame({'Experiment name': f'k={k}, distance={distance}, weights={weight}',
-                                                  'n_neighbors': k,
-                                                  'distance': distance,
-                                                  'weights': weight,
-                                                  'Average F1': average_f1},
-                                                 index=[index_counter])
-
-
-              perf = pd.concat([perf, performance_df_values])
-
-
-df_sorted = perf.sort_values(by='Average F1', ascending=False)
-df_sorted.reset_index(drop =True, inplace=True)
-df_sorted
-```
-
 | Experiment name                           | k  | distance  | weights  | Average F1 |
 |-------------------------------------------|----|-----------|----------|------------|
 | k=11, distance=manhattan, weights=distance | 11 | manhattan | distance | 0.762225   |
@@ -117,48 +77,6 @@ df_sorted
 #### 5-2. **Logistic Regression (LR)**:
    - Regularized LR tested with L1 and L2 penalties, and values of `C` (regularization strength).
    - The best LR model used L1 regularization with `C=10`.
-
-```python
-C_values = [ 0.1, 1.0, 10]
-penalty_values = ['l1', 'l2']
-
-## Creating an empty DataFrame for logistic regression performance
-perform_df = pd.DataFrame(columns=['Experiment name', 'penalty', 'solver', 'C', 'Average F1'])
-
-index_counter = 0
-
-## Creating for loop to iterate over all the hyperparameters of logistic regression
-for c in C_values:
-    for p in penalty_values:
-        # Define the model with its parameters
-        solver = 'liblinear' if p == 'l1' else 'lbfgs'
-        model_args = {'penalty': p, 'C': c, 'solver': solver, "max_iter":1000}
-
-        ## Apply sFold cross-validation defined in question 17
-        expected_labels4, predicted_labels4, avg_error = sFold(5, data, labels, LogisticRegression, model_args, f1_score)
-
-        ## Calculate the average f1-score
-        average_f1 = f1_score(expected_labels4, predicted_labels4, average="weighted")
-
-        ## Populating the dataframe with values generated and the hyperparameters used
-        perform_df_values = pd.DataFrame({'Experiment name': f'penalty={p}, solver={solver}, C={c}',
-                                              'penalty': p,
-                                              'solver': solver,
-                                              'C': c,
-                                              'Average F1': average_f1},
-                                             index=[index_counter])
-
-        ## Concatenating DataFrames
-        perform_df = pd.concat([perform_df, perform_df_values])
-## Display the resulting DataFrame
-perform_df
-
-# Sort the DataFrame by 'Average F1' in descending order
-perform_df_sorted = perform_df.sort_values(by='Average F1', ascending=False).reset_index(drop=True)
-
-# Display the sorted DataFrame
-perform_df_sorted
-```
 
 ![image](https://github.com/user-attachments/assets/df5b3474-73ee-488c-a9fc-3c78bbe2c752)
 
