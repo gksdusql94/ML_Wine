@@ -145,36 +145,3 @@ git clone https://github.com/gksdusql94/ML_Wine.git
 ```
 
 
-### ROC Curve for KNN Model
-
-```python
-    # Plot ROC curve
-    plt.figure()
-    plt.plot(fpr, tpr, label='ROC curve (area = %0.2f)' % roc_auc)
-    plt.plot([0, 1], [0, 1], 'k--')
-    plt.xlim([0.0, 1.0])
-    plt.ylim([0.0, 1.05])
-    plt.xlabel('False Positive Rate')
-    plt.ylabel('True Positive Rate')
-    plt.title('ROC Curve for KNN')
-    plt.legend(loc="lower right")
-    plt.show()
-
-    # Find optimal threshold
-    f1_scores = [f1_score(test_labels, [1 if x >= t else 0 for x in knn_probs]) for t in thresholds]
-    optimal_idx = np.argmax(f1_scores)
-    optimal_threshold = thresholds[optimal_idx]
-    print("Optimal Threshold for KNN:", optimal_threshold)
-
-    # Predict labels using the optimal threshold
-    optimal_pred = [1 if x >= optimal_threshold else 0 for x in knn_probs]
-
-    # Print F1 score using the optimal threshold
-    print("F1 Score using Optimal Threshold:", f1_score(test_labels, optimal_pred))
-
-except Exception as e:
-    print("Error:", e)
-```
-![image](https://github.com/user-attachments/assets/1e437d29-05fb-4a11-a25c-abb69439f7d0)
-
-
