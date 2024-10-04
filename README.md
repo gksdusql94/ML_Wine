@@ -149,6 +149,7 @@ roc_auc = auc(fpr, tpr)
 optimal_threshold = thresholds[np.argmax([f1_score(y_test, [1 if x >= t else 0 for x in knn_probs]) for t in thresholds])]
 ```
 ![image](https://github.com/user-attachments/assets/912051db-b485-4740-b9ef-3882045f71f1)
+
 Optimal Threshold for KNN: 0.3090528018168291
 F1 Score using Optimal Threshold: 0.8592692828146145
 
